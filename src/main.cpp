@@ -2,6 +2,7 @@
 #include "Adafruit_AMG88xx.h"
 #include <ESP8266WiFi.h>
 #include <creds.h> // define SSID and PASS in seperate file
+#include <html.h> // include static html-files
 
 
 
@@ -67,25 +68,7 @@ void loop() {
   // Match the request
   String val;
   if (req.indexOf("/tmpcam") != -1) {
-    client.print("<!DOCTYPE HTML><head>");
-    client.print("<script src=https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js></script>");
-    client.print("</head>");
-    client.print("<body>");
-    client.print("<center>");
-    client.print("<table>");
-    client.print("<tr><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td></tr>");
-    client.print("<tr><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td></tr>");
-    client.print("<tr><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td></tr>");
-    client.print("<tr><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td></tr>");
-    client.print("<tr><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td></tr>");
-    client.print("<tr><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td></tr>");
-    client.print("<tr><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td></tr>");
-    client.print("<tr><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td></tr>");
-    client.print("</table>");
-    client.print("<div id=a></div>");
-    client.print("</center>");
-    client.print("<script>function valtocol(e){max=45;if(e>max){return\"#ff0000\"}min=0;mid=max/2;var d,c,a=0;d=e<mid?255*(2*e/max):255;c=e>mid?255-(255*((2*e-max)/max)):255;sr=d>15?(Math.round(d)).toString(16):\"0\"+(Math.round(d)).toString(16);sg=c>15?(Math.round(c)).toString(16):\"0\"+(Math.round(c)).toString(16);sb=\"00\";return\"#\"+sr+sg+sb}var i=0;w=$(window).width();h=$(window).height();m=h>w?w:h;m=m/8;$(\"td\").css(\"height\",m+\"px\");$(\"td\").css(\"width\",m+\"px\");var array=[];window.setInterval(function(){i++;if(i>80){i=0}$.get(\"test.json\",function(a){console.log(\"Length: \"+a.vals.length);array=a.vals},\"json\");for(i=1;i<=8;i++){for(j=1;j<=8;j++){$(\"table tr:nth-child(\"+i+\") td:nth-child(\"+j+\")\").css(\"background-color\",valtocol(array[(i-1)*8+(j-1)]));$(\"table tr:nth-child(\"+i+\") td:nth-child(\"+j+\")\").html(array[(i-1)*8+(j-1)]+\"\"+valtocol(array[(i-1)*8+(j-1)]))}}},2000);</script>");
-    client.print("</body>");
+    client.print(INDEX);
   } else if (req.indexOf("/test.json") != -1) {
     /*float pixels[AMG88xx_PIXEL_ARRAY_SIZE];
     amg.readPixels(pixels);

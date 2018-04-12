@@ -1,5 +1,5 @@
 <!DOCTYPE HTML><head>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
 </head>
 <body>
 <center>
@@ -13,7 +13,7 @@
   <tr><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td></tr>
   <tr><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td></tr>
 </table>
-<div id="a"></div>
+<div id='a'></div>
 </center>
 
 
@@ -21,17 +21,17 @@
 
 function valtocol(val){
   max = 45.0;
-  if(val>max)return "#ff0000";
+  if(val>max)return '#ff0000';
   min = 0; //critical, dont change
   mid = max/2.0;
   var r,g,b = 0;
   r = val<mid?255*(2*val/max):255;
   g = val>mid?255-(255*((2*val -max)/max)):255;
   //b = val <40?((val)/40.0)*255:(val-80)*(-1)/40.0*255;
-  sr = r>15?(Math.round(r)).toString(16):"0"+(Math.round(r)).toString(16);
-  sg = g>15?(Math.round(g)).toString(16):"0"+(Math.round(g)).toString(16);
-  sb = "00";//b>15?(Math.round(b)).toString(16):"0"+(Math.round(b)).toString(16);
-  return "#"+sr+sg+sb;
+  sr = r>15?(Math.round(r)).toString(16):'0'+(Math.round(r)).toString(16);
+  sg = g>15?(Math.round(g)).toString(16):'0'+(Math.round(g)).toString(16);
+  sb = '00';//b>15?(Math.round(b)).toString(16):'0'+(Math.round(b)).toString(16);
+  return '#'+sr+sg+sb;
 }
 
 
@@ -42,22 +42,21 @@ var i = 0;
 
  m = h>w?w:h;
  m = m/8;
- $("td").css("height", m+ "px");
- $("td").css("width", m+ "px");
+ $('td').css('height', m+ 'px');
+ $('td').css('width', m+ 'px');
 
  var array = []
 
- $.get("test.json", function(r){console.log(r.vals.length);array = r.vals;}, "json");
 
 window.setInterval(function(){
   i++;
   if (i>80) i = 0;
+  $.get('test.json', function(r){console.log("Length: " + r.vals.length);array = r.vals;}, 'json');
 for(i=1; i<=8; i++){
   for(j=1; j<=8; j++){
-    //console.log(i+ "  "+ j)
-    console.log(window.array[(i-1)*8+(j-1)])
-    $('table tr:nth-child('+i+') td:nth-child('+j+')').css("background-color", valtocol(array[(i-1)*8+(j-1)]));
-    $('table tr:nth-child('+i+') td:nth-child('+j+')').html(array[(i-1)*8+(j-1)] + "" + valtocol(array[(i-1)*8+(j-1)]));
+    //console.log(i+ '  '+ j)
+    $('table tr:nth-child('+i+') td:nth-child('+j+')').css('background-color', valtocol(array[(i-1)*8+(j-1)]));
+    $('table tr:nth-child('+i+') td:nth-child('+j+')').html(array[(i-1)*8+(j-1)] + '' + valtocol(array[(i-1)*8+(j-1)]));
   }
 }}, 2000);
 

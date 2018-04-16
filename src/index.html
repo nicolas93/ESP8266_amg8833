@@ -3,7 +3,7 @@
 </head>
 <body>
 <center>
-<table>
+<table style='font-family: Arial'>
   <tr><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td></tr>
   <tr><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td></tr>
   <tr><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td><td>00.00</td></tr>
@@ -18,14 +18,16 @@
 
 <script>
 
-function valtocol(val){
-  max = 45.0;
+function valtocol(val, min, max){
+  //max = 45.0;
   if(val>max)return '#ff0000';
-  min = 0; //critical, dont change
-  mid = max/2.0;
+  //min = 0; //critical, dont change
+  interval = max - min;
+  mid = interval/2.0;
+
   var r,g,b = 0;
-  r = val<mid?255*(2*val/max):255;
-  g = val>mid?255-(255*((2*val -max)/max)):255;
+  r = (val-min)<mid?255*(2*(val-min)/interval):255;
+  g = (val-min)>mid?255-(255*((2*(val-min) -interval)/interval)):255;
   //b = val <40?((val)/40.0)*255:(val-80)*(-1)/40.0*255;
   sr = r>15?(Math.round(r)).toString(16):'0'+(Math.round(r)).toString(16);
   sg = g>15?(Math.round(g)).toString(16):'0'+(Math.round(g)).toString(16);
@@ -51,13 +53,15 @@ window.setInterval(function(){
   i++;
   if (i>80) i = 0;
   $.get('test.json', function(r){console.log("Length: " + r.vals.length);array = r.vals;}, 'json');
+  max = Math.max.apply(null,array);
+  min = Math.min.apply(null,array);
 for(i=1; i<=8; i++){
   for(j=1; j<=8; j++){
     //console.log(i+ '  '+ j)
-    $('table tr:nth-child('+i+') td:nth-child('+j+')').css('background-color', valtocol(array[(i-1)*8+(j-1)]));
-    $('table tr:nth-child('+i+') td:nth-child('+j+')').html(array[(i-1)*8+(j-1)] + '' + valtocol(array[(i-1)*8+(j-1)]));
+    $('table tr:nth-child('+i+') td:nth-child('+j+')').css('background-color', valtocol(array[(i-1)*8+(j-1)], min, max));
+    $('table tr:nth-child('+i+') td:nth-child('+j+')').html(array[(i-1)*8+(j-1)]);
   }
-}}, 200);
+}}, 150);
 
 
 </script>

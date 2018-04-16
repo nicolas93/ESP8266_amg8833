@@ -13,6 +13,6 @@ if(len(sys.argv)>1):
             re = re + c
     print re
     o = open("html.h", "w")
-    o.write("#define INDEX " + re)
+    o.write("#define INDEX \"%s\"" %  re)
 else:
     print "No file."

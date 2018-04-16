@@ -70,7 +70,7 @@ void loop() {
   if (req.indexOf("/tmpcam") != -1) {
     client.print(INDEX);
   } else if (req.indexOf("/test.json") != -1) {
-    /*float pixels[AMG88xx_PIXEL_ARRAY_SIZE];
+    float pixels[AMG88xx_PIXEL_ARRAY_SIZE];
     amg.readPixels(pixels);
     int i = 0;
     char tmp0 [10]= "";
@@ -83,8 +83,8 @@ void loop() {
       json += ", " + String(tmp);
     }
     json += "]\n}";
-    val = json;*/
-    client.print("{\"vals\":[10,10,10,10,10,10,10,10,10,0,30,40,50,60,70,10,10,20,30,40,50,60,70,10,10,20,30,40,50,60,70,10,10,20,30,40,50,60,70,10,10,20,30,40,50,60,70,10,10,20,30,40,50,60,80,10,10,10,10,10,10,10,10,10]}");
+    client.print(json);
+    //client.print("{\"vals\":[10,10,10,10,10,10,10,10,10,0,30,40,50,60,70,10,10,20,30,40,50,60,70,10,10,20,30,40,50,60,70,10,10,20,30,40,50,60,70,10,10,20,30,40,50,60,70,10,10,20,30,40,50,60,80,10,10,10,10,10,10,10,10,10]}");
   } else {
     client.stop();
     return;

@@ -2,7 +2,7 @@
 #include "Adafruit_AMG88xx.h"
 #include <ESP8266WiFi.h>
 #include <creds.h> // define SSID and PASS in seperate file
-#include <html.h> // include static html-files
+#include "FS.h"
 
 
 
@@ -13,6 +13,34 @@ const char* password = PASS;
 
 Adafruit_AMG88xx amg;
 WiFiServer server(80);
+
+void sendFile(WiFiClient c, String path) {
+  if (SPIFFS.exists(path)) {
+    File f = SPIFFS.open(path, "r");
+    while (f.available()) {
+      Serial.println("[http] Sending " + path);
+      Serial.println("[http] bytes:" + String((int)f.size()));
+      int max = f.size() / 1027;
+      int leftover = f.size() % 1027;
+      char buff[1028];
+      Serial.print("[http]");
+      for (int i = 0; i < max; i++) {
+        Serial.print(".");
+        f.readBytes(buff, 1027);
+        buff[1027] = 0;
+        c.print(buff);
+      }
+      Serial.println();
+      Serial.println("[http] done.");
+      f.readBytes(buff, leftover);
+      buff[leftover] = 0;
+      c.print(buff);
+    }
+    f.close();
+  } else {
+    c.print("404");
+  }
+}
 
 
 void setup() {
@@ -68,7 +96,9 @@ void loop() {
   // Match the request
   String val;
   if (req.indexOf("/tmpcam") != -1) {
-    client.print(INDEX);
+    sendFile(client, "/index.html");
+  } else if (req.indexOf("jquery.min.js") != -1) {
+    sendFile(client, "jquery.min.js");
   } else if (req.indexOf("/test.json") != -1) {
     float pixels[AMG88xx_PIXEL_ARRAY_SIZE];
     amg.readPixels(pixels);
